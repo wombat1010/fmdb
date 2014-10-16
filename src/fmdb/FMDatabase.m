@@ -164,7 +164,8 @@ static void rankfunc(sqlite3_context *pCtx, int nVal, sqlite3_value **apVal){
     if (_db) {
         return YES;
     }
-    
+    sqlite3_create_function(db, "rank", 2, SQLITE_UTF8, NULL, &rankfunc, NULL, NULL);
+
     int err = sqlite3_open([self sqlitePath], &_db );
     if(err != SQLITE_OK) {
         NSLog(@"error opening!: %d", err);
