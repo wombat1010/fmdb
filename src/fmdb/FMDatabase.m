@@ -26,7 +26,7 @@ static void rankfunc(sqlite3_context *pCtx, int nVal, sqlite3_value **apVal){
 	int nCol;
 	int iPhrase;
 	double score = 0.0;
-	aMatchinfo = (unsigned int *)sqlite3_value_blob(apVal[0]);
+	aMatchinfo = (int *)sqlite3_value_blob(apVal[0]);
 	nPhrase = aMatchinfo[0];
 	nCol = aMatchinfo[1];
 	offsets = (const char *)sqlite3_value_text(apVal[1]);
