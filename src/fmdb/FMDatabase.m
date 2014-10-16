@@ -46,7 +46,6 @@ static void rankfunc(sqlite3_context *pCtx, int nVal, sqlite3_value **apVal){
 	
 
 	sqlite3_result_double(pCtx, score);
-	[thisOffset release];
 	return;
 }
 
