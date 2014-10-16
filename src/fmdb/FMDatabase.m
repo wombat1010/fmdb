@@ -18,6 +18,38 @@
 
 #pragma mark FMDatabase instantiation and deallocation
 
+static void rankfunc(sqlite3_context *pCtx, int nVal, sqlite3_value **apVal){	
+	const char *offsets;
+
+	int *aMatchinfo;
+	int nPhrase;
+	int nCol;
+	int iPhrase;
+	double score = 0.0;
+	aMatchinfo = (unsigned int *)sqlite3_value_blob(apVal[0]);
+	nPhrase = aMatchinfo[0];
+	nCol = aMatchinfo[1];
+	offsets = (const char *)sqlite3_value_text(apVal[1]);
+
+	NSString *thisOffset = [[NSString alloc] initWithString:[NSString stringWithFormat:@"%s",offsets]];
+	for(iPhrase=0; iPhrase<nPhrase; iPhrase++){
+		int *aPhraseinfo = &aMatchinfo[2 + iPhrase*3];
+		int nHitCount = aPhraseinfo[3*(iPhrase+1)];
+		//int nGlobalHitCount = aPhraseinfo[3*(iPhrase+1)+1];
+		if (nHitCount > 0.0)
+			score += 110;
+		
+	}
+	int position = [[[thisOffset componentsSeparatedByString:@" "] objectAtIndex:2] intValue];
+	if (position == 0)
+		score += 100;
+	
+
+	sqlite3_result_double(pCtx, score);
+	[thisOffset release];
+	return;
+}
+
 + (instancetype)databaseWithPath:(NSString*)aPath {
     return FMDBReturnAutoreleased([[self alloc] initWithPath:aPath]);
 }
